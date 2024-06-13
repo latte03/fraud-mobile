@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import Logo from '@/assets/logo.svg'
 defineOptions({
-  name: 'HomePage',
+  name: 'ProfilePage',
 })
 definePage({
-  name: 'HomePage',
+  name: 'ProfilePage',
   meta: {
-    layout: 'other-layout',
+    layout: 'tab-bar-layout',
+    title: '我的',
+    icon: 'i-simple-icons:docsify',
+    sort: 3,
   },
 })
-
-const route = useRoute('HomePage')
-
-console.log('%c Line:16 🥐', 'color:#f5ce50', route.meta)
 </script>
 
 <template>

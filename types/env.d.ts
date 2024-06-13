@@ -7,4 +7,6 @@ declare interface ImportMetaEnv {
   readonly VITE_PUBLIC_PATH: string
   readonly VITE_DROP_CONSOLE: 'true' | 'false'
   readonly VITE_LEGAL_COMMENTS: 'true' | 'false'
+
+  readonly VITE_APP_TITLE: string
 }

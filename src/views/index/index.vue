@@ -1,16 +1,18 @@
 <script lang="ts" setup>
 import { useAssetsImageURL } from '@composables/url-composable'
 
-import { getRoutes } from '@/router'
 import { sha } from '~build/git'
 
 definePage({
   name: 'IndexPage',
   path: '/',
+  meta: {
+    title: '首页',
+    layout: 'tab-bar-layout',
+    icon: 'i-simple-icons:atlassian',
+    sort: 1,
+  },
 })
-
-// 获取路由表但是不包含布局路由
-console.log(getRoutes())
 
 const logo = useAssetsImageURL('logo', { extension: '.svg' })
 </script>
@@ -18,6 +20,6 @@ const logo = useAssetsImageURL('logo', { extension: '.svg' })
 <template>
   <div>
     sha: {{ sha }}
-    <img :src="logo" alt="" class="w-10 h-10" />
+    <img :src="logo" alt="" class="h-10 w-10" />
   </div>
 </template>

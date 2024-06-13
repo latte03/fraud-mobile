@@ -1,10 +1,22 @@
 /// <reference types="vitest" />
 
+import process from 'node:process'
+
+import dayjs from 'dayjs'
 import { type ConfigEnv, loadEnv, type UserConfigExport } from 'vite'
 
+import { parseEnv } from './build/parse-env'
 import { definePlugins, src } from './build/plugins'
-import { version } from './package.json'
-import { parseEnv } from './build/parseEnv'
+import pkg from './package.json'
+
+const { dependencies, devDependencies, name, version } = pkg
+
+const __APP_INFO__ = {
+  // APP 后台管理信息
+  pkg: { dependencies, devDependencies, name, version },
+  // 最后编译时间
+  lastBuildTime: dayjs().format('yyyy-MM-dd HH:mm:ss'),
+}
 
 /**
  * @link https://vitejs.dev/config/
@@ -21,9 +33,11 @@ export default (configEnv: ConfigEnv): UserConfigExport => {
     resolve: {
       alias: { '@': src },
     },
-    plugins: definePlugins(),
+    plugins: definePlugins(viteEnv),
     define: {
       __AG__VERSION__: JSON.stringify(version),
+
+      __APP_INFO__: JSON.stringify(__APP_INFO__),
     },
     server: {
       /** 设置 host: true 才可以使用 Network 的形式，以 IP 访问项目 */

@@ -1,6 +1,10 @@
-import '@unocss/reset/tailwind.css'
+import '@unocss/reset/tailwind-compat.css'
 import './style/index.less'
 import 'uno.css'
+import 'vant/es/toast/style'
+import 'vant/es/dialog/style'
+import 'vant/es/notify/style'
+import 'vant/es/image-preview/style'
 
 import { createApp } from 'vue'
 

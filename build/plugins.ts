@@ -1,23 +1,29 @@
 /// <reference types="vitest" />
 
 import path from 'node:path'
+import process from 'node:process'
 import { fileURLToPath, URL } from 'node:url'
 
+import { webUpdateNotice } from '@plugin-web-update-notification/vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
+import Compression from 'unplugin-compression/vite'
+import Info from 'unplugin-info/vite'
 import UnpluginSvgComponent from 'unplugin-svg-component/vite'
-import { TDesignResolver } from 'unplugin-vue-components/resolvers'
+import { VantResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import VueMacros from 'unplugin-vue-macros'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import VueRouter from 'unplugin-vue-router/vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
 import MetaLayouts from 'vite-plugin-vue-meta-layouts'
-import Compression from 'unplugin-compression/vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import Info from 'unplugin-info/vite'
-import { webUpdateNotice } from '@plugin-web-update-notification/vite'
+
+import pkg from '../package.json'
+import { GLOB_CONFIG_FILE_NAME } from './constant'
+import type { ParseBoolean } from './parse-env'
 
 export const src = fileURLToPath(new URL('../src', import.meta.url))
 export const types = fileURLToPath(new URL('../types', import.meta.url))
@@ -25,7 +31,12 @@ export const types = fileURLToPath(new URL('../types', import.meta.url))
 const getFilePath = (_path: string) => path.join(src, _path)
 const getTypesPath = (_path: string) => path.join(types, _path)
 
-export function definePlugins() {
+export function definePlugins(env: ParseBoolean<ImportMetaEnv>) {
+  const { VITE_APP_TITLE, MODE } = env
+
+  function getAppConfigSrc() {
+    return `${path || '/'}${GLOB_CONFIG_FILE_NAME}?v=${pkg.version}-${Date.now()}`
+  }
   return [
     VueRouter({
       routesFolder: 'src/views',
@@ -73,7 +84,7 @@ export function definePlugins() {
       include: [/\.[jt]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
       imports: ['vue', VueRouterAutoImports, 'vue/macros'],
       eslintrc: { enabled: true },
-      resolvers: [TDesignResolver({ library: 'vue-next' })],
+      resolvers: [],
       dts: getTypesPath('./auto-imports.d.ts'),
     }),
 
@@ -83,7 +94,7 @@ export function definePlugins() {
      */
     Components({
       dirs: getFilePath('./components'),
-      resolvers: [TDesignResolver({ library: 'vue-next' })],
+      resolvers: [VantResolver()],
       dts: getTypesPath('./component.d.ts'),
     }),
 
@@ -157,6 +168,29 @@ export function definePlugins() {
     webUpdateNotice({
       locale: 'zh_CN',
       logVersion: true,
+    }),
+
+    createHtmlPlugin({
+      inject: {
+        // Inject data into ejs template
+        // 需要注入 index.html ejs 模版的数据 使用在 html 中 ：<div><%= title %></div>
+        data: {
+          title: VITE_APP_TITLE,
+        },
+
+        // Embed the generated app.config.js file 需要注入的标签列表
+        tags:
+          MODE === 'production'
+            ? [
+                {
+                  tag: 'script',
+                  attrs: {
+                    src: getAppConfigSrc(),
+                  },
+                },
+              ]
+            : [],
+      },
     }),
   ]
 }
