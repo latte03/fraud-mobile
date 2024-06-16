@@ -1,1 +1,1 @@
-export { default as user } from './user'
+export { userApi } from './user'

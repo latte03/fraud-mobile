@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useRouteStore } from '@/store/modules/route'
+import type { SvgName } from '~virtual/svg-component'
 
 import DefaultLayout from './default.vue'
 
@@ -7,7 +8,6 @@ defineOptions({
   name: 'TabBarLayout',
 })
 const routeStore = useRouteStore()
-console.log('%c Line:12 🎂 routeStore', 'color:#6ec1c2', routeStore.menus)
 
 // 菜单
 </script>
@@ -16,8 +16,8 @@ console.log('%c Line:12 🎂 routeStore', 'color:#6ec1c2', routeStore.menus)
   <DefaultLayout class="TabBarLayout">
     <van-tabbar route class="tabbar">
       <van-tabbar-item v-for="menu in routeStore.menus" :key="menu.name" replace :to="menu.path">
-        <template #icon>
-          <i :class="menu.meta?.icon" />
+        <template #icon="{ active }">
+          <SvgIcon :name="(active ? menu.meta?.activeIcon : menu.meta?.icon) as SvgName" />
         </template>
         {{ menu.meta?.title }}
       </van-tabbar-item>

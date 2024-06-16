@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouteStore } from '@/store/modules/route'
+import { isDev } from '@/utils/constant'
 
 const routeStore = useRouteStore()
 // 需要缓存的路由组件
@@ -10,14 +11,15 @@ const getTitle = computed(() => currentRoute.meta.title as string)
 
 const routeShowHeader = computed(() => currentRoute.query.showHeader === 'true')
 
-const getShowHeader = computed(() => !currentRoute.meta.hiddenHeader && routeShowHeader.value)
+const getShowHeader = computed(
+  () => isDev || (!currentRoute.meta.hiddenHeader && routeShowHeader.value)
+)
 </script>
 
 <template>
-  <main class="h-screen flex flex-col">
+  <main class="h-screen flex-col">
     <van-nav-bar v-if="getShowHeader" placeholder fixed :title="getTitle" />
 
-    this is default layout
     <routerView class="flex-1 overflow-x-hidden">
       <template #default="{ Component, route }">
         <!--

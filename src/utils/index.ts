@@ -14,3 +14,10 @@ export function judge(
     return false
   })
 }
+
+export function clearHTMLText(content: string) {
+  return content
+    .replaceAll(/<.+?>/g, '')
+    .replaceAll(/&nbsp;/gi, '')
+    .replaceAll(/\s/gi, '')
+}

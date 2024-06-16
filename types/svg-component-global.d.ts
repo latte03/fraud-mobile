@@ -9,18 +9,18 @@ declare module 'vue' {
   export interface GlobalComponents {
     SvgIcon: import("vue").DefineComponent<{
         name: {
-            type: import("vue").PropType<"hot">;
+            type: import("vue").PropType<"a-top" | "cell-icon-connect" | "cell-icon-help" | "cell-icon-location" | "cell-icon-old" | "hot" | "tab-bar-fill-home" | "tab-bar-fill-n-home" | "tab-bar-fill-n-profile" | "tab-bar-fill-n-propaganda" | "tab-bar-fill-profile" | "tab-bar-fill-propaganda" | "tab-bar-outline-home" | "tab-bar-outline-profile" | "tab-bar-outline-propaganda">;
             default: string;
             required: true;
         };
     }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
         name: {
-            type: import("vue").PropType<"hot">;
+            type: import("vue").PropType<"a-top" | "cell-icon-connect" | "cell-icon-help" | "cell-icon-location" | "cell-icon-old" | "hot" | "tab-bar-fill-home" | "tab-bar-fill-n-home" | "tab-bar-fill-n-profile" | "tab-bar-fill-n-propaganda" | "tab-bar-fill-profile" | "tab-bar-fill-propaganda" | "tab-bar-outline-home" | "tab-bar-outline-profile" | "tab-bar-outline-propaganda">;
             default: string;
             required: true;
         };
     }>>, {
-        name: "hot";
+        name: "a-top" | "cell-icon-connect" | "cell-icon-help" | "cell-icon-location" | "cell-icon-old" | "hot" | "tab-bar-fill-home" | "tab-bar-fill-n-home" | "tab-bar-fill-n-profile" | "tab-bar-fill-n-propaganda" | "tab-bar-fill-profile" | "tab-bar-fill-propaganda" | "tab-bar-outline-home" | "tab-bar-outline-profile" | "tab-bar-outline-propaganda";
     }>;
   }
 }
