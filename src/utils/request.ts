@@ -91,8 +91,8 @@ class AgAxios {
     params?: any,
     config?: AxiosRequestConfig<any> | undefined
   ) => {
-    const res = await axios.get<T>(url, { params, ...config })
-    return res.data
+    const res = await axios.get<AgResponseSuccess<T>>(url, { params, ...config })
+    return res.data.data || res.data.rows
   }
 
   get = async <T = any>(
@@ -101,7 +101,7 @@ class AgAxios {
     config?: AxiosRequestConfig<any> | undefined
   ) => {
     const res = await axios.get<AgResponseSuccess<T>>(url, { params, ...config })
-    return res.data.data || res.data.rows
+    return res.data
   }
 }
 export { axios }

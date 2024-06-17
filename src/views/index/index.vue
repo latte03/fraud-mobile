@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { useAssetsImageURL } from '@composables/url-composable'
+import { useRequest } from 'vue-request'
 
+import { fraudApi } from '@/api/fraud'
 import { useUserStore } from '@/store/modules/user'
 import { isDev } from '@/utils/constant'
 
@@ -21,6 +23,10 @@ const banner = useAssetsImageURL('banner', { extension: '.png' })
 const pt1 = useAssetsImageURL('pt1', { extension: '.png' })
 const pt2 = useAssetsImageURL('pt2', { extension: '.png' })
 const userStore = useUserStore()
+
+const { data: list } = useRequest(fraudApi.getCaseList, {
+  defaultParams: [{ pageSize: 100 }],
+})
 </script>
 
 <template>
@@ -40,7 +46,7 @@ const userStore = useUserStore()
         <div class="flex-y-center flex-grow justify-between pl-2">
           <div class="mr-2 flex-grow-1">
             <div class="title">指尖举报</div>
-            <div class="van-ellipsis opacity-75 text-sm-1">ddddd</div>
+            <div class="van-ellipsis opacity-75 text-sm-1">举报非法可疑诈骗行为</div>
           </div>
 
           <div>
@@ -54,8 +60,7 @@ const userStore = useUserStore()
       <div class="section-title">最新案例</div>
 
       <div>
-        <CaseCard />
-        <CaseCard />
+        <CaseCard v-for="item in list?.rows" :key="item.id" :item="item" />
       </div>
     </div>
   </div>

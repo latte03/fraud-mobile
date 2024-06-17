@@ -5,7 +5,7 @@ import type { fraudApi } from '@/api/fraud'
 
 interface PropsType {
   typeRequest: typeof fraudApi.getCaseTypeType | typeof fraudApi.getPublicizeType
-  listRequest: (params: any) => any
+  listRequest: (params: any) => Promise<any>
 }
 defineOptions({
   name: 'PropagandaList',
@@ -18,6 +18,7 @@ const {
   runAsync,
   loading,
   total,
+  current,
 } = usePagination(props.listRequest, {
   manual: true,
   pagination: {
@@ -25,13 +26,20 @@ const {
     pageSizeKey: 'pageSize',
     totalKey: 'total',
   },
-  initialData: [],
 })
 
 const active = ref(0)
-
+const typeListComputed = computed(() => {
+  return [
+    {
+      name: '推荐',
+      id: 'recommend',
+    },
+    ...(typeList.value || []),
+  ]
+})
 const finished = computed(() => {
-  return total.value === list.value?.length
+  return total.value === list.value?.rows?.length
 })
 
 watch(typeList, async () => {
@@ -39,12 +47,25 @@ watch(typeList, async () => {
     await runAsync({
       pageNum: 1,
       pageSize: 10,
-      typeId: typeList.value[0].id,
+      // typeId: typeList.value?.[0].id,
+      //1 推荐 2 置顶
+      recommend: 1,
     })
   }
 })
 
+watch(active, async () => {
+  const id = typeListComputed.value?.[active.value].id
+  const params = id === 'recommend' ? { recommend: 1 } : { typeId: id }
+  await runAsync({
+    pageNum: 1,
+    pageSize: 10,
+    ...params,
+  })
+})
+
 const onLoad = () => {
+  current.value++
   // 异步更新数据
   // setTimeout 仅做示例，真实场景中一般为 ajax 请求
   // setTimeout(() => {
@@ -63,10 +84,9 @@ const onLoad = () => {
 
 <template>
   <div class="PropagandaList">
-    <van-tabs v-model:active="active">
-      <van-tab v-for="type in typeList" :key="type.id" :title="type.name" />
+    <van-tabs v-model:active="active" type="card" class="mt-4">
+      <van-tab v-for="type in typeListComputed" :key="type.id" :title="type.name" />
     </van-tabs>
-
     <div>
       <van-list
         v-model:loading="loading"
@@ -74,13 +94,25 @@ const onLoad = () => {
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <PropagandaCard v-for="item in list" :key="item" :item="item" />
+        <PropagandaCard v-for="item in list?.rows" :key="item" :item="item" />
       </van-list>
     </div>
   </div>
 </template>
 
 <style lang="less" scoped>
-.PropagandaList {
+/* stylelint-disable-next-line selector-class-pattern */
+:deep(.van-tabs__nav) {
+  /* stylelint-disable-next-line selector-class-pattern */
+  &.van-tabs__nav--card {
+    gap: 12px;
+    background: transparent;
+    border: none;
+  }
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
+:deep(.van-tab--card) {
+  border: var(--van-border-width) solid var(--van-tabs-default-color);
 }
 </style>

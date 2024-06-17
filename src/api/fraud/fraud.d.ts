@@ -1,3 +1,5 @@
+import type { OSSItem } from '../system/oss'
+
 export interface PublicizeType {
   id: string
   name: string
@@ -9,6 +11,7 @@ export interface Publicize {
   id: string
   title: string
   img: string
+  image?: OSSItem
   content: string
   views: number
   createTime: Date
