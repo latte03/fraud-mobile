@@ -16,7 +16,7 @@ axios.interceptors.request.use(
     const userStore = useUserStoreWithout()
 
     const TOKEN = userStore.token
-    if (TOKEN && !config.headers.Authorization) {
+    if (!config.headers?.Authorization) {
       config.headers.Authorization = `Bearer ${TOKEN}`
     }
     return config
@@ -77,8 +77,8 @@ class AgAxios {
     params?: any,
     config?: AxiosRequestConfig<any> | undefined
   ) => {
-    const res = await axios.post<T>(url, params, config)
-    return res.data
+    const res = await axios.post<AgResponseSuccess<T>>(url, params, config)
+    return res.data.data
   }
 
   /**
@@ -94,14 +94,21 @@ class AgAxios {
     const res = await axios.get<AgResponseSuccess<T>>(url, { params, ...config })
     return res.data.data || res.data.rows
   }
-
-  get = async <T = any>(
+  getList = async <T = any>(
     url: string,
     params?: any,
     config?: AxiosRequestConfig<any> | undefined
   ) => {
     const res = await axios.get<AgResponseSuccess<T>>(url, { params, ...config })
     return res.data
+  }
+  get = async <T = any>(
+    url: string,
+    params?: any,
+    config?: AxiosRequestConfig<any> | undefined
+  ) => {
+    const res = await axios.get<AgResponseSuccess<T>>(url, { params, ...config })
+    return res.data.data || res.data.rows
   }
 }
 export { axios }

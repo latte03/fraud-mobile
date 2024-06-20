@@ -4,6 +4,7 @@ import { usePagination, useRequest } from 'vue-request'
 import type { fraudApi } from '@/api/fraud'
 
 interface PropsType {
+  type: string
   typeRequest: typeof fraudApi.getCaseTypeType | typeof fraudApi.getPublicizeType
   listRequest: (params: any) => Promise<any>
 }
@@ -85,7 +86,7 @@ const onLoad = () => {
 <template>
   <div class="PropagandaList">
     <van-tabs v-model:active="active" type="card" class="mt-4">
-      <van-tab v-for="type in typeListComputed" :key="type.id" :title="type.name" />
+      <van-tab v-for="_type in typeListComputed" :key="_type.id" :title="_type.name" />
     </van-tabs>
     <div>
       <van-list
@@ -94,7 +95,7 @@ const onLoad = () => {
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <PropagandaCard v-for="item in list?.rows" :key="item" :item="item" />
+        <PropagandaCard v-for="item in list?.rows" :key="item" :type="type" :item="item" />
       </van-list>
     </div>
   </div>

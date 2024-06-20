@@ -8,11 +8,19 @@ interface PropsType {
 defineOptions({
   name: 'CaseCard',
 })
-defineProps<PropsType>()
+const props = defineProps<PropsType>()
+
+const router = useRouter()
+
+function onCLick() {
+  router.push({
+    path: `/post/case/${props.item.id}`,
+  })
+}
 </script>
 
 <template>
-  <div class="case-card w-full p-3">
+  <div class="case-card w-full p-3" @click="onCLick">
     <div class="case-card-title mb-2">{{ item.title }}</div>
     <div class="case-card-content w-full">
       <div class="case-card-body mb-2 w-full flex">
@@ -20,7 +28,14 @@ defineProps<PropsType>()
           {{ clearHTMLText(item.content) }}
         </div>
         <div class="case-card-cover flex-shrink-0">
-          <img :src="item.image?.url" :alt="item.title" srcset="" class="h-full w-full" />
+          <van-image
+            height="100%"
+            width="100%"
+            :src="item.image?.url"
+            :alt="item.title"
+            srcset=""
+            class="h-full w-full"
+          />
         </div>
       </div>
       <div class="case-card-footer mt-2 opacity-50">

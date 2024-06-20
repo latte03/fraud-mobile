@@ -5,23 +5,31 @@ import type { Publicize, PublicizeType } from './fraud'
 
 const fraudApi = {
   getPublicizeType() {
-    return agAxios.unstandardizedGet<PublicizeType[]>('/fraud/publicizeType/list', {
+    return agAxios.get<PublicizeType[]>('/fraud/publicizeType/list', {
       pageSize: 100,
     })
   },
   async getPublicizeList(params: any) {
-    const res = await agAxios.get<Publicize[]>('/fraud/publicize/list', params)
+    const res = await agAxios.getList<Publicize[]>('/fraud/publicize/list', params)
     return transformData(res)
   },
 
   getCaseTypeType() {
-    return agAxios.unstandardizedGet<PublicizeType[]>('/fraud/caseType/list', {
+    return agAxios.get<PublicizeType[]>('/fraud/caseType/list', {
       pageSize: 100,
     })
   },
   async getCaseList(params: any) {
-    const res = await agAxios.get<Publicize[]>('/fraud/case/list', params)
+    const res = await agAxios.getList<Publicize[]>('/fraud/case/list', params)
     return transformData(res)
+  },
+
+  async getPostDetail(params: { type: string; id: string }) {
+    const res = await agAxios.get<Publicize>(`/fraud/${params.type}/${params.id}`)
+
+    const oss = await systemApi.getOSS(res.img)
+
+    return { ...res, image: oss[0] }
   },
 }
 

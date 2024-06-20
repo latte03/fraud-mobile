@@ -24,10 +24,15 @@ const active = ref(0)
       <Propaganda
         :type-request="fraudApi.getPublicizeType"
         :list-request="fraudApi.getPublicizeList"
+        type="publicize"
       />
     </van-tab>
     <van-tab title="案例">
-      <Propaganda :type-request="fraudApi.getCaseTypeType" :list-request="fraudApi.getCaseList" />
+      <Propaganda
+        :type-request="fraudApi.getCaseTypeType"
+        :list-request="fraudApi.getCaseList"
+        type="case"
+      />
     </van-tab>
   </van-tabs>
 </template>

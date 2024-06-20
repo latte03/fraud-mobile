@@ -6,14 +6,14 @@ import type { UserInfo } from './type'
 
 const userApi = {
   doUserNameLogin() {
-    return agAxios.unstandardizedPost<{ token: string }>('/app/login', {
+    return agAxios.post<{ token: string }>('/app/login', {
       username: 'cssqcsyh',
       password: '123456',
     })
   },
 
   getUserInfo(token: string) {
-    return agAxios.unstandardizedGet<UserInfo>(
+    return agAxios.get<UserInfo>(
       '/system/user/profile',
       {},
       {
