@@ -23,5 +23,6 @@ declare module 'vue-router/auto-routes' {
   }  'PostTypePage': RouteRecordInfo<'PostTypePage', '/post/:type/:id', { type: ParamValue<true>, id: ParamValue<true> }, { type: ParamValue<false>, id: ParamValue<false> }>,
     'ProfilePage': RouteRecordInfo<'ProfilePage', '/profile', Record<never, never>, Record<never, never>>,
     'PropagandaPage': RouteRecordInfo<'PropagandaPage', '/propaganda', Record<never, never>, Record<never, never>>,
+    '/report/create': RouteRecordInfo<'/report/create', '/report/create', Record<never, never>, Record<never, never>>,
   }
 }

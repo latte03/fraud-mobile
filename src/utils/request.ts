@@ -32,7 +32,7 @@ axios.interceptors.response.use(
     }
 
     if (res.data.code === 500) {
-      showFailToast('系统错误')
+      showFailToast(res.data.msg || '系统错误')
       return Promise.reject('系统错误')
     }
     return res

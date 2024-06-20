@@ -1,12 +1,23 @@
+import { omit } from 'lodash-es'
+
 import { agAxios, type AgResponseSuccess } from '@/utils/request'
 
 import { systemApi } from '../system'
 import type { Publicize, PublicizeType } from './fraud'
 
 const fraudApi = {
-  getPublicizeType() {
-    return agAxios.get<PublicizeType[]>('/fraud/publicizeType/list', {
+  async getPublicizeType() {
+    const res = await agAxios.get<PublicizeType[]>('/fraud/publicizeType/list', {
       pageSize: 100,
+    })
+    console.log('%c Line:9 🍞 res', 'color:#b03734', res)
+
+    return res.map(i => {
+      return {
+        ...i,
+        text: i.name,
+        value: i.id,
+      }
     })
   },
   async getPublicizeList(params: any) {
@@ -30,6 +41,15 @@ const fraudApi = {
     const oss = await systemApi.getOSS(res.img)
 
     return { ...res, image: oss[0] }
+  },
+
+  async postReport(params: any) {
+    const res = await agAxios.post<Publicize>(`/fraud/report`, {
+      status: 0,
+      ...omit(params, ['fraudImg', 'fraudSound', 'fraudVedio']),
+    })
+
+    return { ...res }
   },
 }
 

@@ -19,6 +19,7 @@ definePage({
   },
 })
 
+const router = useRouter()
 const banner = useAssetsImageURL('banner', { extension: '.png' })
 const pt1 = useAssetsImageURL('pt1', { extension: '.png' })
 const pt2 = useAssetsImageURL('pt2', { extension: '.png' })
@@ -27,6 +28,8 @@ const userStore = useUserStore()
 const { data: list } = useRequest(fraudApi.getCaseList, {
   defaultParams: [{ pageSize: 100 }],
 })
+
+const onReportCreate = () => router.push('/report/create')
 </script>
 
 <template>
@@ -50,7 +53,9 @@ const { data: list } = useRequest(fraudApi.getCaseList, {
           </div>
 
           <div>
-            <van-button round type="default" size="small">我要举报</van-button>
+            <van-button round type="default" size="small" @click="onReportCreate">
+              我要举报
+            </van-button>
           </div>
         </div>
       </div>
